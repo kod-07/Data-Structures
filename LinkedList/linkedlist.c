@@ -5,6 +5,71 @@ struct node{
 	int data;
 	struct node * next;
 };
+struct node * deletelast(struct node *head)
+{
+	struct node * ptr = head;
+	struct node * ptr2 = head->next;
+	while(ptr2->next!=NULL)
+	{
+		ptr2=ptr2->next;
+		ptr=ptr->next;
+	}
+	ptr->next=NULL;
+	free(ptr2);
+	return head;
+}
+struct node * deleteatdata(struct node *head,int data)
+{
+	struct node * ptr1=head->next;
+	struct node *ptr = head;
+	while(ptr1->data!=data)
+	{
+		ptr=ptr->next;
+		ptr1=ptr1->next;
+	}
+	ptr->next = ptr1->next;
+	free(ptr1);
+	return head;
+}
+struct node * deleteatindex(struct node *head ,int index)
+{
+	struct node *ptr = head->next;
+	struct node *p2 = head;
+	for(int i=0; i<index-1;i++){
+		ptr = ptr->next;
+		p2 = p2->next;
+	}
+	p2->next = ptr->next;
+	free(ptr);
+	return head;
+}
+
+struct node * deletefirst(struct node *head)
+{
+	struct node * ptr = head;
+	if(head==NULL)
+	{
+		printf("Linked list is empty");
+		return head;
+	}
+	else{
+		if(head->next==NULL)
+		{
+			printf("Node deleted ");
+			free(head);
+			return NULL;
+		}
+		else
+		{
+			ptr=ptr->next;
+			free(head);
+			return ptr;
+		}
+	}
+}
+
+
+
 struct node * insertatfirst(struct node *head,int data){
 	struct node *ptr = (struct node *)malloc(sizeof(struct node));
 	ptr->next = head;
@@ -83,8 +148,20 @@ int main()
 
 	head = insertat(head,100,1);
 	traversal(head);
-	printf("\nLinked list after insertion of node at last");
+	printf("\nLinked list after insertion of node at last\n");
 	head = insertlast(head,10);
+	traversal(head);
+	printf("\nDeleting first node \n");
+	head = deletefirst(head);
+	traversal(head);
+	printf("\nDeleting index node \n");
+	head = deleteatindex(head,2);
+	traversal(head);
+	printf("\nDeleting data \n");
+	head = deleteatdata(head,40);
+	traversal(head);
+	printf("\nDeleting last element \n");
+	head = deletelast(head);
 	traversal(head);
 	return 0;
 }
